@@ -1,0 +1,26 @@
+<div class="modal-overlay"
+     id="modal-confirm-pay"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-confirm-pay')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title" style="color:var(--success)">
+        <i class="bi bi-cash-coin"></i> Xác nhận thanh toán
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-confirm-pay')">&times;</button>
+    </div>
+
+    <!-- Thông tin hóa đơn – render động bởi openConfirmPay() -->
+    <div class="modal-body" id="confirm-pay-body"></div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-confirm-pay')">Hủy</button>
+      <!-- onclick gán động trong openConfirmPay() -->
+      <button class="btn btn-success" id="btn-confirm-pay">
+        <i class="bi bi-check-lg"></i> Xác nhận đã thu tiền
+      </button>
+    </div>
+
+  </div>
+</div>

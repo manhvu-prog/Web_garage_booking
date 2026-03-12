@@ -1,0 +1,27 @@
+<div class="modal-overlay"
+     id="modal-assign"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-assign')">
+  <div class="modal" style="max-width:600px">
+
+    <div class="modal-header">
+      <span class="modal-title">
+        <i class="bi bi-person-check" style="color:var(--primary)"></i>
+        Nhận phụ trách lịch hẹn
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-assign')">&times;</button>
+    </div>
+
+    <!-- Thông tin xe + dịch vụ – render động bởi openAssign() -->
+    <div class="modal-body" id="modal-assign-body"></div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-assign')">Đóng</button>
+      <!-- onclick được gán lại mỗi lần openAssign() được gọi -->
+      <button class="btn btn-primary" id="btn-do-assign">
+        <i class="bi bi-person-check"></i> Nhận phụ trách
+      </button>
+    </div>
+
+  </div>
+</div>

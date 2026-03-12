@@ -1,0 +1,54 @@
+<div class="modal-overlay"
+     id="modal-cancel-confirm"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-cancel-confirm')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title" style="color:var(--danger)">
+        <i class="bi bi-x-circle"></i> Hủy lịch hẹn
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-cancel-confirm')">&times;</button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Cảnh báo không thể hoàn tác -->
+      <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle"></i>
+        Bạn có chắc muốn hủy lịch hẹn này? Hành động này <strong>không thể hoàn tác</strong>.
+      </div>
+
+      <!-- Thông tin lịch hẹn cần hủy – render bởi openCancelConfirm() -->
+      <div id="cancel-appt-info"
+           style="background:var(--bg-light);border-radius:10px;padding:16px;margin-bottom:16px">
+      </div>
+
+      <!-- Lý do hủy (không bắt buộc) -->
+      <div class="form-group mb-0">
+        <label class="form-label">
+          Lý do hủy
+          <span style="color:var(--text-secondary);font-weight:400">(tùy chọn)</span>
+        </label>
+        <textarea class="form-control"
+                  id="cancel-reason"
+                  rows="2"
+                  placeholder="VD: Bận việc đột xuất, xe đã sửa nơi khác...">
+        </textarea>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <!-- Giữ nguyên lịch – đóng modal -->
+      <button class="btn btn-outline" onclick="closeModal('modal-cancel-confirm')">
+        Giữ lịch hẹn
+      </button>
+      <!-- Xác nhận hủy – gọi doCancel() được gán động bởi openCancelConfirm() -->
+      <button class="btn btn-danger" id="btn-do-cancel">
+        <i class="bi bi-x-circle"></i> Xác nhận hủy
+      </button>
+    </div>
+
+  </div>
+</div>

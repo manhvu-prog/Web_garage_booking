@@ -1,0 +1,40 @@
+<div class="modal-overlay"
+     id="modal-complete"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-complete')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title">
+        <i class="bi bi-check-circle" style="color:var(--success)"></i>
+        Hoàn thành dịch vụ
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-complete')">&times;</button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Thẻ tóm tắt xe + dịch vụ – render động bởi openComplete() -->
+      <div id="complete-detail"></div>
+
+      <!-- Ghi chú kỹ thuật của nhân viên -->
+      <div class="form-group mt-3">
+        <label class="form-label">Ghi chú kỹ thuật</label>
+        <textarea class="form-control"
+                  id="complete-note"
+                  rows="3"
+                  placeholder="Mô tả công việc đã thực hiện, vật tư đã dùng...">
+        </textarea>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-complete')">Hủy</button>
+      <button class="btn btn-success" onclick="doComplete()">
+        <i class="bi bi-check-lg"></i> Xác nhận hoàn thành
+      </button>
+    </div>
+
+  </div>
+</div>

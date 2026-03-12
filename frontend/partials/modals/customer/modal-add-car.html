@@ -1,0 +1,44 @@
+<div class="modal-overlay"
+     id="modal-add-car"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-add-car')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title">
+        <i class="bi bi-car-front" style="color:var(--primary)"></i> Thêm xe mới
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-add-car')">&times;</button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Biển số xe – bắt buộc -->
+      <div class="form-group">
+        <label class="form-label">Biển số xe <span style="color:red">*</span></label>
+        <input class="form-control" id="car-plate" placeholder="VD: 29A-12345">
+      </div>
+
+      <!-- Hãng xe và dòng xe -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">Hãng xe</label>
+          <input class="form-control" id="car-brand" placeholder="Toyota, Honda...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dòng xe</label>
+          <input class="form-control" id="car-model-input" placeholder="Camry, Civic...">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-car')">Hủy</button>
+      <button class="btn btn-primary" onclick="addCar()">
+        <i class="bi bi-plus"></i> Thêm xe
+      </button>
+    </div>
+
+  </div>
+</div>

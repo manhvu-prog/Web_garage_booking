@@ -1,0 +1,44 @@
+<div class="page active" id="page-dashboard">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="bi bi-car-front"></i></div>
+      <div><div class="stat-value">2</div><div class="stat-label">Xe đã đăng ký</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><i class="bi bi-calendar-check"></i></div>
+      <div><div class="stat-value" id="stat-upcoming">–</div><div class="stat-label">Lịch hẹn sắp tới</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
+      <div><div class="stat-value">12</div><div class="stat-label">Lần bảo dưỡng</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="bi bi-receipt"></i></div>
+      <div><div class="stat-value" id="stat-unpaid">–</div><div class="stat-label">Hóa đơn chưa thanh toán</div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 360px;gap:20px">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Lịch hẹn sắp tới</span>
+        <button class="btn btn-primary btn-sm" onclick="showPage('booking')">
+          <i class="bi bi-plus"></i> Đặt lịch
+        </button>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Xe</th><th>Khung giờ</th><th>Dịch vụ</th><th>Trạng thái</th><th></th></tr>
+          </thead>
+          <tbody id="upcoming-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Xe của tôi</span></div>
+        <div class="card-body" id="my-cars-mini"></div>
+      </div>
+    </div>
+  </div>
+</div>

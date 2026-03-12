@@ -1,0 +1,42 @@
+<div class="modal-overlay"
+     id="modal-add-svc"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-add-svc')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title">
+        <i class="bi bi-tools" style="color:var(--primary)"></i> Thêm / Sửa dịch vụ
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-add-svc')">&times;</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label class="form-label">Tên dịch vụ</label>
+        <input class="form-control" id="svc-name" placeholder="VD: Thay dầu máy">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label">Giá tiền (đ)</label>
+          <input class="form-control" id="svc-price" type="number" placeholder="350000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Thời gian (phút)</label>
+          <input class="form-control" id="svc-duration" type="number" placeholder="60">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-svc')">Hủy</button>
+      <button class="btn btn-primary" onclick="addService()">
+        <i class="bi bi-plus"></i> Lưu dịch vụ
+      </button>
+    </div>
+
+  </div>
+</div>

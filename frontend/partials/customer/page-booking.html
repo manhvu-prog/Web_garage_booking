@@ -1,0 +1,80 @@
+<div class="page" id="page-booking">
+  <div class="page-header">
+    <div class="page-title">Đặt lịch bảo dưỡng</div>
+    <div class="page-subtitle">Chọn khung giờ và dịch vụ phù hợp</div>
+  </div>
+  <div class="steps" id="booking-steps">
+    <div class="step active" id="step-1">
+      <div class="step-num">1</div>
+      <span class="step-label">Chọn khung giờ</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step-2">
+      <div class="step-num">2</div>
+      <span class="step-label">Chọn xe &amp; dịch vụ</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step-3">
+      <div class="step-num">3</div>
+      <span class="step-label">Xác nhận</span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:20px">
+    <div>
+      <div id="booking-step1"><div id="slots-container"></div></div>
+      <div id="booking-step2" style="display:none">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header">
+            <span class="card-title"><i class="bi bi-car-front" style="color:var(--primary)"></i> Chọn xe</span>
+          </div>
+          <div class="card-body"><div class="car-list" id="car-select-list"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="bi bi-tools" style="color:var(--primary)"></i> Chọn dịch vụ</span>
+          </div>
+          <div class="card-body"><div class="service-grid" id="service-select-grid"></div></div>
+        </div>
+      </div>
+      <div id="booking-step3" style="display:none">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Xác nhận thông tin</span></div>
+          <div class="card-body" id="confirm-detail"></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:20px;gap:10px">
+        <button class="btn btn-outline" id="btn-prev" onclick="bookingPrev()" style="display:none">
+          <i class="bi bi-arrow-left"></i> Quay lại
+        </button>
+        <button class="btn btn-primary" id="btn-next" onclick="bookingNext()" disabled>
+          Tiếp theo <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-title">Tóm tắt đặt lịch</div>
+      <div class="summary-row">
+        <div>
+          <div class="summary-label">Khung giờ</div>
+          <div class="summary-value" id="sum-slot">Chưa chọn</div>
+        </div>
+      </div>
+      <div class="summary-row">
+        <div>
+          <div class="summary-label">Xe</div>
+          <div class="summary-value" id="sum-car">Chưa chọn</div>
+        </div>
+      </div>
+      <div class="summary-row">
+        <div>
+          <div class="summary-label" id="sum-svc-label">Dịch vụ (0)</div>
+          <div class="summary-value text-secondary" id="sum-services">Chưa chọn</div>
+        </div>
+      </div>
+      <div class="summary-total">
+        <span class="label">Tổng cộng</span>
+        <span class="amount" id="sum-total">0 đ</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="page" id="page-schedule">
+  <div class="page-header">
+    <div class="page-title">Quản lý lịch làm việc</div>
+    <div class="page-subtitle">Thêm và xóa khung giờ làm việc</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:20px">
+    <div class="card">
+      <div class="calendar-wrapper">
+        <div class="cal-nav">
+          <button class="cal-btn" onclick="changeMonth(-1)"><i class="bi bi-chevron-left"></i></button>
+          <span class="cal-title" id="cal-month-title"></span>
+          <button class="cal-btn" onclick="changeMonth(1)"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+      <div style="padding:0 20px 20px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:12px" id="day-slots-title">Chọn ngày để xem khung giờ</div>
+        <div id="day-slots-list"></div>
+      </div>
+    </div>
+    <div class="add-slot-panel">
+      <div class="add-slot-title">Thêm khung giờ</div>
+      <div class="form-group">
+        <label class="form-label">Ngày đã chọn</label>
+        <div style="font-weight:700;font-size:15px;color:var(--primary)" id="selected-date-label">Chưa chọn</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Giờ bắt đầu</label>
+        <input class="form-control" type="time" id="slot-start" value="08:00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Giờ kết thúc</label>
+        <input class="form-control" type="time" id="slot-end" value="09:30">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Số lượng xe tối đa</label>
+        <input class="form-control" type="number" id="slot-capacity" value="3" min="1">
+      </div>
+      <button class="btn btn-primary btn-lg" onclick="addSlot()">
+        <i class="bi bi-plus-lg"></i> Thêm khung giờ
+      </button>
+    </div>
+  </div>
+</div>

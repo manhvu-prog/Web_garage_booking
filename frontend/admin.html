@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoCare – Quản trị</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- CSS tách theo chức năng -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- partials/shared/sidebar-admin.html -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-car-front-fill"></i></div>
+      <div>
+        <div class="brand-name">AutoCare</div>
+        <div class="brand-sub">Garage Booking</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" onclick="showPage('dashboard')"><i class="bi bi-grid"></i> Tổng quan</a>
+      <a class="nav-item" onclick="showPage('users')"><i class="bi bi-people"></i> Quản lý người dùng</a>
+      <a class="nav-item" onclick="showPage('services')"><i class="bi bi-tools"></i> Quản lý dịch vụ</a>
+      <a class="nav-item" onclick="showPage('schedule')"><i class="bi bi-clock"></i> Quản lý lịch</a>
+      <a class="nav-item" onclick="showPage('invoices')"><i class="bi bi-receipt"></i> Quản lý hóa đơn</a>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+
+    <!-- partials/shared/topbar-admin.html -->
+    <header class="topbar">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Tìm kiếm...">
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-icon"><i class="bi bi-bell"></i><span class="badge-dot"></span></button>
+        <div class="dropdown">
+          <button class="user-menu" onclick="toggleDropdown('dd-admin')">
+            <div class="user-avatar" style="background:#7c3aed">A</div>
+            <div><div class="user-name">Admin</div><div class="user-role">Quản trị viên</div></div>
+            <i class="bi bi-chevron-down" style="font-size:12px;color:#94a3b8;margin-left:4px"></i>
+          </button>
+          <div class="dropdown-menu" id="dd-admin">
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="login.html"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <!-- partials/admin/page-dashboard.html -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div class="page-title">Tổng quan hệ thống</div>
+          <div class="page-subtitle">Ngày 10/03/2026</div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-people"></i></div><div><div class="stat-value" id="stat-users">–</div><div class="stat-label">Người dùng</div></div></div>
+          <div class="stat-card"><div class="stat-icon orange"><i class="bi bi-calendar-check"></i></div><div><div class="stat-value" id="stat-appts">–</div><div class="stat-label">Lịch hẹn hôm nay</div></div></div>
+          <div class="stat-card"><div class="stat-icon green"><i class="bi bi-cash-stack"></i></div><div><div class="stat-value" id="stat-revenue">–</div><div class="stat-label">Doanh thu hôm nay</div></div></div>
+          <div class="stat-card"><div class="stat-icon red"><i class="bi bi-exclamation-circle"></i></div><div><div class="stat-value" id="stat-pending">–</div><div class="stat-label">Chưa thanh toán</div></div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Lịch hẹn mới nhất</span><a href="#" onclick="showPage('schedule')" class="btn btn-outline btn-sm">Xem tất cả</a></div>
+            <div class="table-wrapper"><table><thead><tr><th>Xe</th><th>Khách</th><th>Khung giờ</th><th>Trạng thái</th></tr></thead><tbody id="admin-appts-tbody"></tbody></table></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Hóa đơn chưa thanh toán</span></div>
+            <div class="card-body" id="admin-unpaid-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- partials/admin/page-users.html -->
+      <div class="page" id="page-users">
+        <div class="page-header d-flex justify-between align-center">
+          <div><div class="page-title">Quản lý người dùng</div><div class="page-subtitle">Danh sách tài khoản hệ thống</div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-add-user')"><i class="bi bi-person-plus"></i> Thêm người dùng</button>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="tabs" style="border:none;margin:0">
+              <button class="tab-btn active" onclick="filterUsers('all', this)">Tất cả</button>
+              <button class="tab-btn" onclick="filterUsers('khach_hang', this)">Khách hàng</button>
+              <button class="tab-btn" onclick="filterUsers('nhan_vien', this)">Nhân viên</button>
+            </div>
+          </div>
+          <div class="table-wrapper"><table><thead><tr><th>#</th><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Vai trò</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="users-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- partials/admin/page-services.html -->
+      <div class="page" id="page-services">
+        <div class="page-header d-flex justify-between align-center">
+          <div><div class="page-title">Quản lý dịch vụ</div><div class="page-subtitle">Danh sách dịch vụ bảo dưỡng</div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-add-svc')"><i class="bi bi-plus-lg"></i> Thêm dịch vụ</button>
+        </div>
+        <div class="card"><div class="table-wrapper"><table><thead><tr><th>#</th><th>Tên dịch vụ</th><th>Giá tiền</th><th>Thời gian ước tính</th><th>Thao tác</th></tr></thead><tbody id="services-tbody"></tbody></table></div></div>
+      </div>
+
+      <!-- partials/admin/page-schedule.html -->
+      <div class="page" id="page-schedule">
+        <div class="page-header"><div class="page-title">Quản lý lịch làm việc</div><div class="page-subtitle">Thêm và xóa khung giờ làm việc</div></div>
+        <div style="display:grid;grid-template-columns:1fr 340px;gap:20px">
+          <div class="card">
+            <div class="calendar-wrapper">
+              <div class="cal-nav">
+                <button class="cal-btn" onclick="changeMonth(-1)"><i class="bi bi-chevron-left"></i></button>
+                <span class="cal-title" id="cal-month-title"></span>
+                <button class="cal-btn" onclick="changeMonth(1)"><i class="bi bi-chevron-right"></i></button>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+            </div>
+            <div style="padding:0 20px 20px">
+              <div style="font-weight:700;font-size:14px;margin-bottom:12px" id="day-slots-title">Chọn ngày để xem khung giờ</div>
+              <div id="day-slots-list"></div>
+            </div>
+          </div>
+          <div class="add-slot-panel">
+            <div class="add-slot-title">Thêm khung giờ</div>
+            <div class="form-group"><label class="form-label">Ngày đã chọn</label><div style="font-weight:700;font-size:15px;color:var(--primary)" id="selected-date-label">Chưa chọn</div></div>
+            <div class="form-group"><label class="form-label">Giờ bắt đầu</label><input class="form-control" type="time" id="slot-start" value="08:00"></div>
+            <div class="form-group"><label class="form-label">Giờ kết thúc</label><input class="form-control" type="time" id="slot-end" value="09:30"></div>
+            <div class="form-group"><label class="form-label">Số lượng xe tối đa</label><input class="form-control" type="number" id="slot-capacity" value="3" min="1"></div>
+            <button class="btn btn-primary btn-lg" onclick="addSlot()"><i class="bi bi-plus-lg"></i> Thêm khung giờ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- partials/admin/page-invoices.html -->
+      <div class="page" id="page-invoices">
+        <div class="page-header"><div class="page-title">Quản lý hóa đơn</div><div class="page-subtitle">Xác nhận thanh toán từ khách hàng</div></div>
+        <div class="tabs"><button class="tab-btn active" onclick="filterInvoices('all', this)">Tất cả</button><button class="tab-btn" onclick="filterInvoices('chua_thanh_toan', this)">Chưa thanh toán</button><button class="tab-btn" onclick="filterInvoices('da_thanh_toan', this)">Đã thanh toán</button></div>
+        <div class="card"><div class="table-wrapper"><table><thead><tr><th>Hóa đơn</th><th>Khách hàng</th><th>Xe</th><th>Dịch vụ</th><th>Tổng tiền</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="admin-invoices-tbody"></tbody></table></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/modal-loader.js"></script>
+<script>
+  loadModals([
+    'partials/modals/admin/modal-add-user.html',
+    'partials/modals/admin/modal-add-svc.html',
+    'partials/modals/admin/modal-confirm-pay.html'
+  ]);
+</script>
+<script src="js/admin.js"></script>
+</body>
+</html>

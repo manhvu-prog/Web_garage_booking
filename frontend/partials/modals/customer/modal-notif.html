@@ -1,0 +1,51 @@
+<div class="modal-overlay"
+     id="modal-notif"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-notif')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title">
+        <i class="bi bi-bell" style="color:var(--primary)"></i> Thông báo
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-notif')">&times;</button>
+    </div>
+
+    <div class="modal-body" style="padding:0">
+
+      <!-- Thông báo 1: Nhắc lịch hẹn -->
+      <div style="padding:16px 20px;border-bottom:1px solid #f1f5f9;
+                  display:flex;gap:12px;align-items:flex-start">
+        <div style="width:36px;height:36px;background:var(--primary-light);border-radius:9px;
+                    display:flex;align-items:center;justify-content:center;
+                    color:var(--primary);flex-shrink:0">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:13.5px">Lịch hẹn ngày mai</div>
+          <div style="color:var(--text-secondary);font-size:12.5px;margin-top:2px">
+            Bạn có lịch hẹn lúc 08:00 ngày 10/03/2026
+          </div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:4px">30 phút trước</div>
+        </div>
+      </div>
+
+      <!-- Thông báo 2: Hóa đơn mới -->
+      <div style="padding:16px 20px;display:flex;gap:12px;align-items:flex-start">
+        <div style="width:36px;height:36px;background:var(--success-light);border-radius:9px;
+                    display:flex;align-items:center;justify-content:center;
+                    color:var(--success);flex-shrink:0">
+          <i class="bi bi-receipt"></i>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:13.5px">Hóa đơn mới</div>
+          <div style="color:var(--text-secondary);font-size:12.5px;margin-top:2px">
+            Hóa đơn #INV-001 đã được tạo
+          </div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:4px">2 giờ trước</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

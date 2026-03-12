@@ -1,0 +1,18 @@
+.appointment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.appt-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); }
+.appt-header   { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.appt-plate    { font-size: 16px; font-weight: 800; letter-spacing: 0.03em; }
+.appt-model    { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+.appt-divider  { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.appt-customer-name  { font-weight: 700; font-size: 14px; }
+.appt-customer-phone { font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; }
+.appt-services       { margin-top: 10px; }
+.appt-services-label { font-size: 12px; color: var(--text-secondary); font-weight: 600; margin-bottom: 5px; }
+.appt-service-tag { font-size: 12.5px; color: var(--text-primary); padding: 2px 0; display: flex; align-items: center; gap: 6px; }
+.appt-service-tag::before { content: "•"; color: var(--primary); font-size: 16px; line-height: 1; }
+.appt-staff   { font-size: 12px; color: var(--text-secondary); margin-top: 8px; }
+.appt-staff a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+.timeslot-header { display: flex; align-items: center; gap: 10px; margin: 24px 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.timeslot-time  { font-size: 17px; font-weight: 800; }
+.timeslot-count { margin-left: auto; font-size: 13px; color: var(--text-secondary); font-weight: 600; }

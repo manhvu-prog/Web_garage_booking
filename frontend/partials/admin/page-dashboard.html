@@ -1,0 +1,42 @@
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div class="page-title">Tổng quan hệ thống</div>
+    <div class="page-subtitle">Ngày 10/03/2026</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="bi bi-people"></i></div>
+      <div><div class="stat-value" id="stat-users">–</div><div class="stat-label">Người dùng</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><i class="bi bi-calendar-check"></i></div>
+      <div><div class="stat-value" id="stat-appts">–</div><div class="stat-label">Lịch hẹn hôm nay</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="bi bi-cash-stack"></i></div>
+      <div><div class="stat-value" id="stat-revenue">–</div><div class="stat-label">Doanh thu hôm nay</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="bi bi-exclamation-circle"></i></div>
+      <div><div class="stat-value" id="stat-pending">–</div><div class="stat-label">Chưa thanh toán</div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Lịch hẹn mới nhất</span>
+        <a href="#" onclick="showPage('schedule')" class="btn btn-outline btn-sm">Xem tất cả</a>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Xe</th><th>Khách</th><th>Khung giờ</th><th>Trạng thái</th></tr></thead>
+          <tbody id="admin-appts-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Hóa đơn chưa thanh toán</span></div>
+      <div class="card-body" id="admin-unpaid-list"></div>
+    </div>
+  </div>
+</div>

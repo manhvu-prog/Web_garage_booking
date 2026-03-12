@@ -1,0 +1,18 @@
+<div class="modal-overlay"
+     id="modal-invoice"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-invoice')">
+  <div class="modal" style="max-width:560px">
+
+    <div class="modal-header">
+      <span class="modal-title">
+        <i class="bi bi-receipt" style="color:var(--primary)"></i> Chi tiết hóa đơn
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-invoice')">&times;</button>
+    </div>
+
+    <!-- Nội dung được render động bởi viewInvoice() trong customer.js -->
+    <div class="modal-body" id="modal-invoice-body"></div>
+
+  </div>
+</div>
