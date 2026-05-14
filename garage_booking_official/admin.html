@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoCare – Quản trị</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- CSS tách theo chức năng -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    /* ── Báo cáo doanh thu ── */
+    .report-section {
+      margin-top: 28px;
+    }
+    .report-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .report-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary, #1e293b);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .report-title i { color: var(--primary, #6366f1); }
+    .report-filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-light, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 10px;
+      padding: 8px 14px;
+    }
+    .report-filter label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary, #64748b);
+    }
+    .report-filter select {
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 7px;
+      padding: 5px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary, #1e293b);
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+    .report-filter select:focus { border-color: var(--primary, #6366f1); }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+    .chart-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border, #e2e8f0);
+      padding: 20px 22px 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .chart-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary, #1e293b);
+      margin-bottom: 4px;
+    }
+    .chart-card-sub {
+      font-size: 12px;
+      color: var(--text-secondary, #64748b);
+      margin-bottom: 16px;
+    }
+    .chart-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 220px;
+      color: #94a3b8;
+      font-size: 13px;
+      gap: 8px;
+    }
+    .chart-empty i { font-size: 36px; opacity: .4; }
+    .chart-summary-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .chart-pill {
+      background: var(--bg-light, #f8fafc);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary, #64748b);
+      border: 1px solid var(--border, #e2e8f0);
+    }
+    .chart-pill span { color: var(--primary, #6366f1); }
+  </style>
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <!-- partials/shared/sidebar-admin.html -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="bi bi-car-front-fill"></i></div>
+        <div>
+          <div class="brand-name">AutoCare</div>
+          <div class="brand-sub">Garage Booking</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" onclick="showPage('dashboard')"><i class="bi bi-grid"></i> Tổng quan</a>
+        <a class="nav-item" onclick="showPage('users')"><i class="bi bi-people"></i> Quản lý người dùng</a>
+        <a class="nav-item" onclick="showPage('services')"><i class="bi bi-tools"></i> Quản lý dịch vụ</a>
+        <a class="nav-item" onclick="showPage('schedule')"><i class="bi bi-clock"></i> Quản lý lịch</a>
+        <a class="nav-item" onclick="showPage('invoices')"><i class="bi bi-credit-card"></i> Quản lý thanh toán</a>
+      </nav>
+      <div class="sidebar-footer">© 2026 AutoCare System</div>
+    </aside>
+
+    <div class="main-content">
+
+      <!-- partials/shared/topbar-admin.html -->
+      <header class="topbar">
+        <div class="topbar-actions">
+
+          <div class="dropdown">
+            <button class="user-menu" onclick="toggleDropdown('dd-admin')">
+              <div class="user-avatar" style="background:#7c3aed">A</div>
+              <div>
+                <div class="user-name">Admin</div>
+                <div class="user-role">Quản trị viên</div>
+              </div>
+              <i class="bi bi-chevron-down" style="font-size:12px;color:#94a3b8;margin-left:4px"></i>
+            </button>
+            <div class="dropdown-menu" id="dd-admin">
+
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item danger" href="#" onclick="doLogout(); return false;"><i
+                  class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- partials/admin/page-dashboard.html -->
+        <div class="page active" id="page-dashboard">
+          <div class="page-header">
+            <div class="page-title">Tổng quan hệ thống</div>
+
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon blue"><i class="bi bi-people"></i></div>
+              <div>
+                <div class="stat-value" id="stat-users">–</div>
+                <div class="stat-label">Người dùng</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon orange"><i class="bi bi-calendar-check"></i></div>
+              <div>
+                <div class="stat-value" id="stat-appts">–</div>
+                <div class="stat-label">Lịch hẹn hôm nay</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i class="bi bi-cash-stack"></i></div>
+              <div>
+                <div class="stat-value" id="stat-revenue">–</div>
+                <div class="stat-label">Doanh thu hôm nay</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon red"><i class="bi bi-exclamation-circle"></i></div>
+              <div>
+                <div class="stat-value" id="stat-pending">–</div>
+                <div class="stat-label">Chưa thanh toán</div>
+              </div>
+            </div>
+          </div>
+          <!-- ── BÁO CÁO BIỂU ĐỒ DOANH THU ── -->
+          <div class="report-section">
+            <div class="report-header-row">
+              <div class="report-title">
+                <i class="bi bi-bar-chart-line-fill"></i>
+                Báo cáo doanh thu & dịch vụ
+              </div>
+              <div class="report-filter">
+                <label><i class="bi bi-calendar3"></i> Năm:</label>
+                <select id="filter-nam" onchange="onReportFilterChange()"></select>
+                <label style="margin-left:8px"><i class="bi bi-calendar-month"></i> Tháng:</label>
+                <select id="filter-thang" onchange="onReportFilterChange()">
+                  <option value="1">Tháng 1</option><option value="2">Tháng 2</option>
+                  <option value="3">Tháng 3</option><option value="4">Tháng 4</option>
+                  <option value="5">Tháng 5</option><option value="6">Tháng 6</option>
+                  <option value="7">Tháng 7</option><option value="8">Tháng 8</option>
+                  <option value="9">Tháng 9</option><option value="10">Tháng 10</option>
+                  <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+                </select>
+                <button class="btn btn-primary btn-sm" style="margin-left:12px; background: #10b981; border-color: #10b981" onclick="exportReportExcel()">
+                  <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+                </button>
+              </div>
+            </div>
+
+            <div class="charts-grid">
+              <!-- Biểu đồ cột: doanh thu theo tháng -->
+              <div class="chart-card">
+                <div class="chart-card-title"><i class="bi bi-bar-chart-fill" style="color:#6366f1"></i> Doanh thu theo tháng</div>
+                <div class="chart-card-sub" id="bar-chart-sub">Tổng doanh thu đã thu theo từng tháng trong năm</div>
+                <div id="bar-chart-wrap">
+                  <canvas id="chart-doanh-thu" height="210"></canvas>
+                </div>
+                <div class="chart-summary-pills" id="bar-chart-pills"></div>
+              </div>
+
+              <!-- Biểu đồ tròn: % dịch vụ tháng được chọn -->
+              <div class="chart-card">
+                <div class="chart-card-title"><i class="bi bi-pie-chart-fill" style="color:#f59e0b"></i> Tỷ lệ dịch vụ trong tháng</div>
+                <div class="chart-card-sub" id="pie-chart-sub">Số lượt thực hiện từng dịch vụ</div>
+                <div id="pie-chart-wrap">
+                  <canvas id="chart-dich-vu" height="210"></canvas>
+                </div>
+                <div class="chart-summary-pills" id="pie-chart-pills"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
+            <div class="card">
+              <div class="card-header"><span class="card-title">Lịch hẹn mới nhất</span><a href="#"
+                  onclick="showPage('schedule')" class="btn btn-outline btn-sm">Xem tất cả</a></div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Xe</th>
+                      <th>Khách</th>
+                      <th>Khung giờ</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-appts-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">Hóa đơn chưa thanh toán</span></div>
+              <div class="card-body" id="admin-unpaid-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- partials/admin/page-users.html -->
+        <div class="page" id="page-users">
+          <div class="page-header d-flex justify-between align-center">
+            <div>
+              <div class="page-title">Quản lý người dùng</div>
+              <div class="page-subtitle">Lọc theo tên, email, số điện thoại</div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('modal-add-user')"><i class="bi bi-person-plus"></i> Thêm
+              người dùng</button>
+          </div>
+          <div style="margin-bottom:16px">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="admin-users-search" placeholder="Tìm theo tên, email, SĐT..."
+                oninput="onAdminPageSearch('users', this.value)">
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="tabs" id="user-tabs" style="border:none;margin:0">
+                <button class="tab-btn active" onclick="filterUsers('all', this)">Tất cả</button>
+                <button class="tab-btn" onclick="filterUsers('khach_hang', this)">Khách hàng</button>
+                <button class="tab-btn" onclick="filterUsers('nhan_vien', this)">Nhân viên</button>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Điện thoại</th>
+                    <th>Vai trò</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- partials/admin/page-services.html -->
+        <div class="page" id="page-services">
+          <div class="page-header d-flex justify-between align-center">
+            <div>
+              <div class="page-title">Quản lý dịch vụ</div>
+              <div class="page-subtitle">Danh sách dịch vụ bảo dưỡng</div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('modal-add-svc')"><i class="bi bi-plus-lg"></i> Thêm dịch
+              vụ</button>
+          </div>
+          <div style="margin-bottom:16px">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="admin-services-search" placeholder="Tìm theo tên dịch vụ..."
+                oninput="onAdminPageSearch('services', this.value)">
+            </div>
+          </div>
+          <div class="card">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tên dịch vụ</th>
+                    <th>Giá tiền</th>
+                    <th>Thời gian ước tính</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="services-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- partials/admin/page-schedule.html -->
+        <div class="page" id="page-schedule">
+          <div class="page-header">
+            <div class="page-title">Quản lý lịch làm việc</div>
+            <div class="page-subtitle">Thêm và xóa khung giờ làm việc</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 340px;gap:20px">
+            <div class="card">
+              <div class="calendar-wrapper">
+                <div class="cal-nav">
+                  <button class="cal-btn" onclick="changeMonth(-1)"><i class="bi bi-chevron-left"></i></button>
+                  <span class="cal-title" id="cal-month-title"></span>
+                  <button class="cal-btn" onclick="changeMonth(1)"><i class="bi bi-chevron-right"></i></button>
+                </div>
+                <div class="cal-grid" id="cal-grid"></div>
+              </div>
+              <div style="padding:0 20px 20px">
+                <div style="font-weight:700;font-size:14px;margin-bottom:12px" id="day-slots-title">Chọn ngày để xem
+                  khung giờ</div>
+                <div id="day-slots-list"></div>
+              </div>
+            </div>
+            <div class="add-slot-panel">
+              <div class="add-slot-title">Thêm khung giờ</div>
+              <div class="form-group"><label class="form-label">Ngày đã chọn</label>
+                <div style="font-weight:700;font-size:15px;color:var(--primary)" id="selected-date-label">Chưa chọn
+                </div>
+              </div>
+              <div class="form-group"><label class="form-label">Giờ bắt đầu</label><input class="form-control"
+                  type="time" id="slot-start" value="08:00"></div>
+              <div class="form-group"><label class="form-label">Giờ kết thúc</label><input class="form-control"
+                  type="time" id="slot-end" value="09:30"></div>
+              <div class="form-group"><label class="form-label">Số lượng xe tối đa</label><input class="form-control"
+                  type="number" id="slot-capacity" value="3" min="1"></div>
+              <button class="btn btn-primary btn-lg" onclick="addSlot()"><i class="bi bi-plus-lg"></i> Thêm khung
+                giờ</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- partials/admin/page-invoices.html -->
+        <div class="page" id="page-invoices">
+          <div class="page-header">
+            <div class="page-title">Quản lý thanh toán</div>
+            <div class="page-subtitle">Theo dõi và xác nhận thanh toán của khách hàng</div>
+          </div>
+          <div style="margin-bottom:16px">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="admin-invoices-search" placeholder="Tìm theo khách hàng, biển số..."
+                oninput="onAdminPageSearch('invoices', this.value)">
+            </div>
+          </div>
+          <div class="tabs" id="invoice-tabs">
+            <button class="tab-btn active" onclick="filterInvoices('all', this)">Tất cả</button>
+            <button class="tab-btn" onclick="filterInvoices('chua_thanh_toan', this)">Chưa thanh toán</button>
+            <button class="tab-btn" onclick="filterInvoices('da_thanh_toan', this)">Đã thanh toán</button>
+          </div>
+          <div class="card">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Hóa đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Xe</th>
+                    <th>Dịch vụ</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-invoices-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/mock.js"></script>
+  <script src="js/modal-loader.js"></script>
+  <script>
+    loadModals([
+      'partials/modals/admin/modal-add-user.html',
+      'partials/modals/admin/modal-add-svc.html',
+      'partials/modals/admin/modal-confirm-pay.html'
+    ]);
+  </script>
+  <script src="js/admin.js"></script>
+</body>
+
+</html>

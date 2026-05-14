@@ -1,0 +1,34 @@
+<!-- =====================================================
+  partial: modals/admin/modal-confirm-pay.html
+  Mô tả : Hộp thoại xác nhận thu tiền hóa đơn (Admin)
+  Trigger: openConfirmPay(invId) trong js/admin.js
+  Nội dung: render động bởi JS vào #confirm-pay-body
+  Xử lý : confirmPayment(invId) gán vào #btn-confirm-pay
+  Lưu ý : Chỉ Admin mới có quyền xác nhận thanh toán
+===================================================== -->
+<div class="modal-overlay"
+     id="modal-confirm-pay"
+     style="display:none"
+     onclick="closeModalOuter(event,'modal-confirm-pay')">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title" style="color:var(--success)">
+        <i class="bi bi-cash-coin"></i> Xác nhận thanh toán
+      </span>
+      <button type="button" class="modal-close" onclick="closeModal('modal-confirm-pay')">&times;</button>
+    </div>
+
+    <!-- Thông tin hóa đơn – render động bởi openConfirmPay() -->
+    <div class="modal-body" id="confirm-pay-body"></div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" onclick="closeModal('modal-confirm-pay')">Hủy</button>
+      <!-- onclick gán động trong openConfirmPay() -->
+      <button type="button" class="btn btn-success" id="btn-confirm-pay">
+        <i class="bi bi-check-lg"></i> Xác nhận đã thu tiền
+      </button>
+    </div>
+
+  </div>
+</div>

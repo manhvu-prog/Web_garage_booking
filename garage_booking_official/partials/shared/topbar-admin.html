@@ -1,0 +1,26 @@
+<header class="topbar">
+  <div class="search-box">
+    <i class="bi bi-search"></i>
+    <input type="text" placeholder="Tìm kiếm...">
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-icon"><i class="bi bi-bell"></i><span class="badge-dot"></span></button>
+    <div class="dropdown">
+      <button class="user-menu" onclick="toggleDropdown('dd-admin')">
+        <div class="user-avatar" style="background:#7c3aed">A</div>
+        <div>
+          <div class="user-name">Admin</div>
+          <div class="user-role">Quản trị viên</div>
+        </div>
+        <i class="bi bi-chevron-down" style="font-size:12px;color:#94a3b8;margin-left:4px"></i>
+      </button>
+      <div class="dropdown-menu" id="dd-admin">
+        <a class="dropdown-item"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item danger" href="#" onclick="doLogout(); return false;">
+          <i class="bi bi-box-arrow-right"></i> Đăng xuất
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,27 @@
+<div class="page" id="page-invoices">
+  <div class="page-header">
+    <div class="page-title">Quản lý thanh toán</div>
+    <div class="page-subtitle">Theo dõi và xác nhận thanh toán của khách hàng</div>
+  </div>
+  <div style="margin-bottom:16px">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" id="admin-invoices-search" placeholder="Tìm theo khách hàng, biển số..." oninput="onAdminPageSearch('invoices', this.value)">
+    </div>
+  </div>
+  <div class="tabs" id="invoice-tabs">
+    <button class="tab-btn active" onclick="filterInvoices('all', this)">Tất cả</button>
+    <button class="tab-btn" onclick="filterInvoices('chua_thanh_toan', this)">Chưa thanh toán</button>
+    <button class="tab-btn" onclick="filterInvoices('da_thanh_toan', this)">Đã thanh toán</button>
+  </div>
+  <div class="card">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Hóa đơn</th><th>Khách hàng</th><th>Xe</th><th>Dịch vụ</th><th>Tổng tiền</th><th>Trạng thái</th><th>Thao tác</th></tr>
+        </thead>
+        <tbody id="admin-invoices-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>

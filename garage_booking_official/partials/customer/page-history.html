@@ -1,0 +1,38 @@
+<div class="page" id="page-history">
+  <div class="page-header">
+    <div class="page-title">Lịch sử bảo dưỡng</div>
+    <div class="page-subtitle">Hồ sơ bảo dưỡng và quản lý lịch hẹn</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <div class="search-box" style="flex:1;min-width:200px">
+      <i class="bi bi-search"></i>
+      <input type="text" id="history-search" placeholder="Tìm theo xe, dịch vụ..." oninput="renderHistory()">
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="tab-btn active" onclick="filterHistory('all', this)">Tất cả</button>
+      <button class="tab-btn" onclick="filterHistory('cho_thuc_hien', this)">Chờ thực hiện</button>
+      <button class="tab-btn" onclick="filterHistory('dang_thuc_hien', this)">Đang thực hiện</button>
+      <button class="tab-btn" onclick="filterHistory('hoan_thanh', this)">Hoàn thành</button>
+      <button class="tab-btn" onclick="filterHistory('da_huy', this)">Đã hủy</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Tất cả lịch hẹn</span></div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Ngày</th><th>Xe</th><th>Dịch vụ</th><th>Trạng thái</th><th>Thao tác</th></tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Dòng thời gian</span></div>
+      <div class="card-body">
+        <div class="record-timeline" id="history-timeline"></div>
+      </div>
+    </div>
+  </div>
+</div>

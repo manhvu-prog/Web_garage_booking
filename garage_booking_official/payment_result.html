@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kết quả thanh toán – AutoCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: var(--bg-body);
+    }
+    .result-card {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
+    .icon-container {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+    .success {
+        color: var(--success);
+    }
+    .error {
+        color: var(--danger);
+    }
+    .result-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+    }
+    .result-message {
+        color: var(--text-secondary);
+        margin-bottom: 30px;
+        line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="result-card">
+    <div id="icon-container" class="icon-container">
+        <!-- Icon will be injected here -->
+    </div>
+    <div id="result-title" class="result-title">
+        Đang xử lý...
+    </div>
+    <div id="result-message" class="result-message">
+        Vui lòng đợi trong giây lát.
+    </div>
+    <a href="index.html" class="btn btn-primary" style="width: 100%; display: block; text-decoration: none;">Về trang chủ</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let status = urlParams.get('status');
+        let code = urlParams.get('code');
+        
+        // Hỗ trợ trường hợp VNPAY gọi trực tiếp về file này (không qua URL trung gian của Backend)
+        const vnp_ResponseCode = urlParams.get('vnp_ResponseCode');
+        if (vnp_ResponseCode) {
+            code = vnp_ResponseCode;
+            status = (vnp_ResponseCode === '00') ? 'success' : 'error';
+        }
+        
+        const iconContainer = document.getElementById('icon-container');
+        const titleEl = document.getElementById('result-title');
+        const messageEl = document.getElementById('result-message');
+
+        if (status === 'success') {
+            iconContainer.innerHTML = '<i class="bi bi-check-circle-fill success"></i>';
+            titleEl.textContent = 'Thanh toán thành công!';
+            messageEl.textContent = 'Cảm ơn bạn đã sử dụng dịch vụ của AutoCare. Hóa đơn của bạn đã được thanh toán.';
+        } else if (status === 'error') {
+            iconContainer.innerHTML = '<i class="bi bi-x-circle-fill error"></i>';
+            titleEl.textContent = 'Thanh toán thất bại!';
+            let errorMsg = 'Đã có lỗi xảy ra trong quá trình thanh toán.';
+            if (code === '24') {
+                errorMsg = 'Khách hàng hủy giao dịch.';
+            } else if (code === '11') {
+                errorMsg = 'Thời gian chờ thanh toán đã hết hạn.';
+            } else if (code === '51') {
+                errorMsg = 'Tài khoản của quý khách không đủ số dư để thực hiện giao dịch.';
+            }
+            messageEl.textContent = errorMsg + ' Vui lòng thử lại hoặc chọn phương thức thanh toán khác.';
+        } else if (status === 'invalid_signature') {
+            iconContainer.innerHTML = '<i class="bi bi-exclamation-triangle-fill error"></i>';
+            titleEl.textContent = 'Lỗi bảo mật!';
+            messageEl.textContent = 'Chữ ký phản hồi không hợp lệ. Vui lòng liên hệ với bộ phận hỗ trợ.';
+        } else {
+            iconContainer.innerHTML = '<i class="bi bi-question-circle-fill" style="color: var(--text-secondary)"></i>';
+            titleEl.textContent = 'Trạng thái không xác định';
+            messageEl.textContent = 'Không thể xác định kết quả giao dịch.';
+        }
+
+        // Xử lý nếu mở dạng Popup
+        if (window.opener) {
+            window.opener.postMessage({ type: 'PAYMENT_COMPLETED', status: status }, '*');
+            const btn = document.querySelector('a.btn');
+            if (btn) {
+                btn.textContent = 'Đóng cửa sổ này';
+                btn.removeAttribute('href');
+                btn.onclick = function(e) { 
+                    e.preventDefault();
+                    window.close(); 
+                };
+            }
+            // Tự động đóng sau 3 giây nếu là popup
+            setTimeout(() => { window.close(); }, 3000);
+        }
+    });
+</script>
+
+</body>
+</html>

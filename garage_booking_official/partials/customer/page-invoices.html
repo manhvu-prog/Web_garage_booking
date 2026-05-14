@@ -1,0 +1,19 @@
+<div class="page" id="page-invoices">
+  <div class="page-header">
+    <div class="page-title">Hóa đơn</div>
+    <div class="page-subtitle">Quản lý thanh toán</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <div class="search-box" style="flex:1;min-width:200px">
+      <i class="bi bi-search"></i>
+      <input type="text" id="invoice-search" placeholder="Tìm theo biển số, dịch vụ, mã hóa đơn..." oninput="renderInvoices()">
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="tab-btn active" onclick="filterInvoiceCustomer('all', this)">Tất cả</button>
+      <button class="tab-btn" onclick="filterInvoiceCustomer('chua_thanh_toan', this)">Chưa thanh toán</button>
+      <button class="tab-btn" onclick="filterInvoiceCustomer('da_thanh_toan', this)">Đã thanh toán</button>
+      <button class="tab-btn" onclick="filterInvoiceCustomer('hoa_don_da_huy', this)">Đã hủy</button>
+    </div>
+  </div>
+  <div id="invoice-list" style="display:grid;gap:16px"></div>
+</div>
